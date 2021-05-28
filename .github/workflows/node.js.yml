@@ -1,0 +1,26 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ project-main ]
+  pull_request:
+    branches: [ project-main ]
+
+jobs:
+  cypress-test:
+    runs-on: ubuntu-latest
+    container: cypress/browsers:node14.7.0-chrome84
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run cypress test
+      uses: cypress-io/github-action@v2
+      with:
+        browser: chrome
+        headless: true
+        install-command: npm i
+        start: npm start
+        wait-on: 'http://localhost:3000'
